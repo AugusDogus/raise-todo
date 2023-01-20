@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
       </Box>
       <Spacer />
       <ButtonGroup>
-        {!sessionData && <Button variant={'ghost'}><Link href={signUpLink}>Sign Up</Link></Button>}
+        {!sessionData && <Link href={signUpLink}><Button variant={'ghost'}>Sign Up</Button></Link>}
         <Button variant={'ghost'} onClick={sessionData ? () => void signOut() : () => void signIn('github')}>{sessionData ? "Sign out" : "Sign in"}</Button>
       </ButtonGroup>
     </Flex>
