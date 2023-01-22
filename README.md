@@ -27,6 +27,8 @@ Create a `.env` file similar to [`.env.example`](https://github.com/AugusDogus/r
 
 Refer to the [Create T3 Docs](https://create.t3.gg/en/deployment/vercel/) for deployment instructions.
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAugusDogus%2Fraise-todo)
+
 ## License
 
 A license is currently not being offered for this software.
