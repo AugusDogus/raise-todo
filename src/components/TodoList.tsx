@@ -32,6 +32,15 @@ const TodoList: React.FC<{ todos: Todo[] }> = ({ todos }) => {
   // Track parallel mutations so we may invalidate the query when all mutations have ended (optimistic updates)
   const mutationTracker = useTrackParallelMutations();
 
+  const onCreateTodo = (input: { todo: string }) => {
+    if (input.todo.length < 1) {
+      setError('Try typing something...');
+      return;
+    }
+
+    createTodo(input);
+  };
+
   const { mutate: createTodo } = api.todo.create.useMutation({
     onMutate: (input) => {
       mutationTracker.startOne();
@@ -108,13 +117,13 @@ const TodoList: React.FC<{ todos: Todo[] }> = ({ todos }) => {
               onChange={(e) => setTodo(e.currentTarget.value)}
               onKeyPress={(e) => {
                 if (e.key === 'Enter') {
-                  createTodo({ todo });
+                  onCreateTodo({ todo });
                 }
               }}
               placeholder="Dust the bananas"
               size="md"
             />
-            <Button onClick={() => createTodo({ todo })} size="md" colorScheme="green">
+            <Button onClick={() => onCreateTodo({ todo })} size="md" colorScheme="green">
               Create
             </Button>
           </Stack>
