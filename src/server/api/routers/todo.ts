@@ -1,4 +1,3 @@
-import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 import { createTRPCRouter, protectedProcedure } from '../trpc';
@@ -15,7 +14,7 @@ export const todoRouter = createTRPCRouter({
     .input(
       z.object({
         todo: z.string().min(1),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const todo = await ctx.prisma.todo.create({
@@ -31,7 +30,7 @@ export const todoRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const todo = await ctx.prisma.todo.findUnique({
