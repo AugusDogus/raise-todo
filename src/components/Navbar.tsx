@@ -16,6 +16,7 @@ import {
 import Link from 'next/link';
 
 const Navbar: React.FC = () => {
+  // Use github for auth
   const signUpLink = 'https://github.com/signup';
 
   const { data: sessionData } = useSession();

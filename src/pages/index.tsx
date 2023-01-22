@@ -9,8 +9,9 @@ import { authOptions } from './api/auth/[...nextauth]';
 import type {} from 'next';
 
 const Home: NextPage = () => {
+  // Check if we're signed in
   const { data: sessionData } = useSession();
-
+  // Only fetch todos if we're signed in
   const { data: todos } = api.todo.getAll.useQuery(undefined, { enabled: !!sessionData?.user });
 
   return (
@@ -39,6 +40,7 @@ const Home: NextPage = () => {
 
 export default Home;
 
+// Get rid of the unauthed flash while loading
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   return {
     props: {

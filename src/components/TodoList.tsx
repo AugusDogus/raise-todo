@@ -29,6 +29,7 @@ const TodoList: React.FC<{ todos: Todo[] }> = ({ todos }) => {
 
   const utils = api.useContext();
 
+  // Track parallel mutations so we may invalidate the query when all mutations have ended (optimistic updates)
   const mutationTracker = useTrackParallelMutations();
 
   const { mutate: createTodo } = api.todo.create.useMutation({
@@ -96,6 +97,7 @@ const TodoList: React.FC<{ todos: Todo[] }> = ({ todos }) => {
     },
   });
 
+  //TODO: Add simplebar for better scrolling - https://www.npmjs.com/package/simplebar-react
   return (
     <Card>
       <CardBody>
