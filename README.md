@@ -1,28 +1,32 @@
-# Create T3 App
+<h1 align="center"><a href="https://raise-todo.vercel.app/" target="_blank">Raise Todo</a></h1>
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+## Stack
 
-## What's next? How do I make an app with this?
+- **Bootstrapping**: [create-t3-app](https://create.t3.gg/)
+- **Framework**: [Next.js](https://nextjs.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Component Library**: [Chakra UI](https://chakra-ui.com/)
+- **Authentication**: [NextAuth.js](https://next-auth.js.org/)
+- **Database**: [PlanetScale](https://planetscale.com/)
+- **Deployment**: [Vercel](https://vercel.com/)
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Running Locally
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+This application requires Node.js to run.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+```bash
+git clone git@github.com:AugusDogus/raise-todo.git
+cd raise-todo
+pnpm i
+pnpm dev
+```
 
-## Learn More
+Create a `.env` file similar to [`.env.example`](https://github.com/AugusDogus/raise-todo/blob/main/.env.example).
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## Deploying
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+Refer to the [Create T3 Docs](https://create.t3.gg/en/deployment/vercel/) for deployment instructions.
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+## License
 
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+A license is currently not being offered for this software.
