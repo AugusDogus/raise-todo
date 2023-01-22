@@ -1,9 +1,12 @@
 import { Card, CardBody, CardHeader, Heading, Text } from '@chakra-ui/react';
-import { type NextPage } from 'next';
+import { GetServerSideProps, type NextPage } from 'next';
+import { unstable_getServerSession } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import Navbar from '../components/Navbar';
 import TodoList from '../components/TodoList';
 import { api } from '../utils/api';
+import { authOptions } from './api/auth/[...nextauth]';
+import type {} from 'next';
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -35,3 +38,11 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  return {
+    props: {
+      session: await unstable_getServerSession(req, res, authOptions),
+    },
+  };
+};

@@ -18,6 +18,7 @@ import { useState } from 'react';
 import { api } from '../utils/api';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { Todo } from '@prisma/client';
+import { useTrackParallelMutations } from '../hooks/useTrackParallelMutations';
 
 const TodoList: React.FC<{ todos: Todo[] }> = ({ todos }) => {
   const [todo, setTodo] = useState<string>('');
@@ -28,11 +29,33 @@ const TodoList: React.FC<{ todos: Todo[] }> = ({ todos }) => {
 
   const utils = api.useContext();
 
+  const mutationTracker = useTrackParallelMutations();
+
   const { mutate: createTodo } = api.todo.create.useMutation({
-    onSuccess: () => {
+    onMutate: (input) => {
+      mutationTracker.startOne();
+      utils.todo.getAll.cancel();
       setTodo('');
       setError('');
-      utils.todo.getAll.invalidate();
+      const previous = utils.todo.getAll.getData();
+
+      // Create a new todo
+      const newTodo = {
+        id: Math.random().toString(),
+        text: input.todo,
+        completed: false,
+        userId: 'optimistic',
+        createdAt: new Date(),
+      };
+
+      // Add the new todo to the cache
+      if (previous) utils.todo.getAll.setData(undefined, [...previous, newTodo]);
+    },
+    onSettled: () => {
+      setTodo('');
+      setError('');
+      mutationTracker.endOne();
+      if (mutationTracker.allEnded()) utils.todo.getAll.invalidate();
     },
     onError: (error) => {
       if (error.message.includes('too_small')) setError('Try typing something...');
@@ -40,15 +63,36 @@ const TodoList: React.FC<{ todos: Todo[] }> = ({ todos }) => {
   });
 
   const { mutateAsync: toggle } = api.todo.toggle.useMutation({
-    onSuccess: () => {
-      utils.todo.getAll.invalidate();
+    onMutate: (input) => {
+      mutationTracker.startOne();
+      utils.todo.getAll.cancel();
+      const previous = utils.todo.getAll.getData();
+      const todo = previous?.find((todo) => todo.id === input.id);
+      if (todo && previous) {
+        todo.completed = !todo.completed;
+        utils.todo.getAll.setData(undefined, [...previous]);
+      }
+    },
+    onSettled: () => {
+      mutationTracker.endOne();
+      if (mutationTracker.allEnded()) utils.todo.getAll.invalidate();
     },
   });
 
   const { mutateAsync: deleteCompleted } = api.todo.deleteCompleted.useMutation({
-    onSuccess: () => {
-      utils.todo.getAll.invalidate();
+    onMutate: () => {
+      utils.todo.getAll.cancel();
+      mutationTracker.startOne();
+      const previous = utils.todo.getAll.getData();
+      if (previous) {
+        const newTodos = previous.filter((todo) => !todo.completed);
+        utils.todo.getAll.setData(undefined, newTodos);
+      }
+    },
+    onSettled: () => {
       onToggle();
+      mutationTracker.endOne();
+      if (mutationTracker.allEnded()) utils.todo.getAll.invalidate();
     },
   });
 
