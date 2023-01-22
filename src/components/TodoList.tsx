@@ -97,10 +97,11 @@ const TodoList: React.FC<{ todos: Todo[] }> = ({ todos }) => {
       if (previous) {
         const newTodos = previous.filter((todo) => !todo.completed);
         utils.todo.getAll.setData(undefined, newTodos);
+        onToggle();
+        setError('');
       }
     },
     onSettled: () => {
-      onToggle();
       mutationTracker.endOne();
       if (mutationTracker.allEnded()) utils.todo.getAll.invalidate();
     },
